@@ -4,13 +4,13 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Service Worker for Everyone!</title>
 
 		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
-
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+		<link rel="stylesheet" href="css/custom/style.css">
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/obsidian.css">
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -24,8 +24,427 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+					<h1>Service Workers for everyone❗</h1>
+				</section>
+
+				<section data-background="#d12026" data-background-transition="zoom" class="bg-color">
+					<h2>About Me</h2>
+					<p class="fragment">Head Instructor & Development Lead at HackerYou</p>
+					<p class="fragment">@Rchristiani on Twitter</p>
+					<p class="fragment">ryanchristiani.com</p>
+					<p class="fragment">letslearnes6.com</p>
+					<p class="fragment">NodeSchoolTO Organizer</p>
+				</section>
+
+				<section data-background="#d12026" data-background-transition="zoom" class="bg-color">
+					<img src="imgs/RyanVideo_ES6_Title_02.jpg">
+				</section>
+				
+				<section data-background="#FEDF79" data-background-transition="zoom">
+					<img src="imgs/lets-code-along.png" alt="">
+				</section>
+
+				<section>
+					<h2>The Problem</h2>
+					<p style="font-size: 80px;"><span style="transform: rotateY(180deg); display: inline-block;">💨</span>🚃🚃🚃🚃 &nbsp;&nbsp;&nbsp;🌳&nbsp;&nbsp;&nbsp;🌳&nbsp;&nbsp;🏡</p>
+				</section>
+
+				<section>
+					<h2>Offline notes</h2>
+				</section>
+
+				<section>
+					<h3>Appcache</h3>
+					<p>We have been able to cache connect before with AppCache.</p>
+					<p>However AppCache is in the process of being removed from the browser, and service workers are taking over.</p>
+					<p>With Service workers, get the programmatic ability to cache what you want, how you want.</p>
+				</section>
+
+				<section>
+					<h3>Service Workers</h3>
+					<p>A service worker sits between your site and the network.</p>
+					<p style="font-size: 100px;">📂 ⇢ 📦 ️⇢ ☁️</p>
+				</section>
+
+				<section>
+					<h3>Legend</h3>
+					<ul style="list-style: none; font-size: 80px;">
+						<li>📂  Our Page</li>
+						<li>📦  Service Worker</li>
+						<li>☁️  The Network</li>
+					</ul>
+				</section>
+	
+				<section>
+					<h3>Create Offline experiences</h3>
+					<p>This is one component of the Progressive Web App idea.</p>
+				</section>
+
+				<section>
+					<h3>Progressive Web Apps</h3>
+					<ul>
+						<li>Fast performance</li>
+						<li>Instant content loading</li> 
+						<li>Push Notifications</li>
+						<li>Add to home screen</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Web Workers</h3>
+					<p>Service Workers are just one type of Worker. Web Workers in the browser allow us to run code in a separate worker thread.</p>
+				</section>
+				
+				<section>
+					<h3>A new thread</h3>
+					<p>JavaScript is a single threaded language, meaning it does one thing at a time. But like, pretty fast! However sometimes we need to do more than one thing at a time.</p>
+				</section>
+
+				<section>
+					<a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ" taget="_blank">
+						<img src="imgs/event-loop.png" alt="">
+					</a>
+				</section>
+
+				<section>
+					<h3>Demo Site</h3>
+					<p>https://rchristiani.github.io/ttc-service-workers/</p>
+				</section>
+
+				<section>
+					<h3>Register a worker</h3>
+					<pre><code class="hljs" data-trim>
+ 
+if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+        .then(reg => {
+            console.log('Service Worker Registered')
+        })
+        .catch(err => {
+            console.log(`Error registering worker ${err}`);
+        })
+}
+
+					</code></pre>
+				</section>
+
+				<section>
+					<p>Application tab to work with service workers.</p>
+					<img src="imgs/registered.gif" alt="">
+				</section>
+
+				<section>
+					<h3>Scope</h3>
+					<p>Inside of service works we have a different environment work with. There is no DOM access available to you.</p>
+				</section>
+
+				<section>
+					<h3><code>self</code></h3>
+					<p>Inside of the workers environment, we get access to a global called <code>self</code>. This object has all the methods and properties that we need.</p>
+				</section>
+
+				<section>
+					<h3>Life Cycle</h3>
+					<p>When a service worker is registered there is a lifecycle it goes there, and there are a series of events that are triggered.</p>
+					<ul>
+						<li class="fragment">Download</li>
+						<li class="fragment">Install</li>
+						<li class="fragment">Active</li>
+					</ul>
+				</section>
+
+				<section>
+					<h4>Install</h4>
+					<p>The install event is a good place start your cache. Caching your static assets can be done here.</p>
+				</section>
+
+				<section>
+					<pre><code class="hljs" data-trim>
+self.addEventListener('install', function(e) {
+  caches.open('union-times')
+    .then((cache) => {
+            
+    });
+});
+					</code></pre>
+				</section>
+
+				<section>
+					<h4>CacheStorage</h4>
+					<p>Available to us in both the worker and the window is CacheStorage, or <code>caches</code>. This is used to actual open and fill our cache.</p>
+					<pre><code class="hljs" data-trim>
+ caches.open('union-times')
+  .then((cache) => {
+            
+  });
+					</code></pre>
+					<p>Using the <code>.open()</code> method we provide a name for our cache, it then returns a Promise that we can use to get access to the new <code>cache</code>.</p>
+				</section>
+
+				<section>
+					<p>With this new <code>cache</code> object we can use the <code>addAll</code> method to cache our static assets.</p>
+					<pre><code class="hljs" data-trim>
+return cache.addAll([
+  '',
+  'js/script.js',
+  'js/templater.js',
+  'css/style.css'
+]);
+					</code></pre>
+					<p><strong>NOTE</strong> You have to make sure you paths are correct, otherwise your cache will fail to fetch the resource!</p>
+				</section>
+				<section>
+					<p>So here we have cached our assets, we can see this if we go to the application panel again, and checkout the cache section.</p>
+				</section>
+
+				<section>
+					<img src="imgs/cached.gif" alt="">
+				</section>
+				
+				<section>
+					<p>However we need to now tell the service worker to work as our intermediary, enter the <code>fetch</code> event.</p>
+				</section>
+
+				<section>
+					<p style="font-size: 100px; position: relative; left: -100px;"><span class="fragment" data-fragment-index="4">⇣</span>&nbsp;&nbsp;<span style="position: relative; top: -60px;" class="fragment" data-fragment-index="3">⇠</span>&nbsp;&nbsp;<span class="fragment" data-fragment-index="2">⇡</span> ︎</p>
+					<p style="font-size: 100px;">📂 <span class="fragment" data-fragment-index="1">⇢</span> 📦 ️❌ ☁️</p>
+				</section>
+
+				<section>
+					<h3>Fetch</h3>
+
+					<pre><code class="hljs" data-trim>
+					
+self.addEventListener('fetch', function(e) {
+
+});
+					</code></pre>
+					<p>Just like other events in the browser, the fetch event is passed an event object.</p>
+				</section>
+
+				<section>
+					<p>In the <code>fetch</code> event we can use the <code>resonpdeWith</code> method to decide how we want to get our data, from the cache or the network.</p>
+					<pre><code class="hljs" data-trim>
+self.addEventListener('fetch', function(e) {
+  e.respondeWith(
+    
+  );
+});
+					</code></pre>
+				</section>
+
+				<section>
+					<pre><code class="hljs" data-trim>
+e.respondeWith(
+  caches.open('union-times')
+    .then(function(cache) {
+            
+    })
+);
+					</code></pre>
+				</section>
+
+				<section>
+					<p>Using the request we can check it see if that request is in our cache.</p>
+					<pre><code class="hljs" data-trim>
+return caches.match(e.request)
+  .then(function(res) {
+    return res;
+  });
+});
+    				</code></pre>
+    				<p>If it is, we can return it.</p>
+				</section>
+
+				<section>
+					<p>How about caching the content that is new, when the network it up.</p>
+					<pre><code class="hljs" data-trim>
+return caches.match(e.request)
+  .then(function(res) {
+    return res || fetch(e.request).then(res => {
+      e.request.url
+       .match('chrome-extension://') ? 
+        '' : 
+        cache.put(e.request, res.clone());
+        return res;           
+    });
+});
+    				</code></pre>
+				</section>
+
+				<section>
+					<p style="font-size: 100px; position: relative; left: -100px;"><span class="fragment" data-fragment-index="8">⇣</span>&nbsp;&nbsp;<span style="position: relative; top: -60px;" class="fragment" data-fragment-index="7">⇠</span>&nbsp;&nbsp;<span class="fragment" data-fragment-index="6">⇡</span> ︎</p>
+					<p style="font-size: 100px;">📂 <span class="fragment" data-fragment-index="1">⇢</span> 📦 <span class="fragment" data-fragment-index="2">⇢</span> ☁️</p>
+					<p style="font-size: 100px; position: relative; left: 120px;"><span class="fragment" data-fragment-index="5">⇡</span>&nbsp;&nbsp;<span style="position: relative; top: 60px;" class="fragment" data-fragment-index="4">⇠</span>&nbsp;&nbsp;<span class="fragment" data-fragment-index="3">⇣</span> ︎</p>
+				</section>
+
+				<section>
+					<h2>Works Great!</h2>
+					<img src="imgs/offline.gif" alt="">
+				</section>
+
+				<section>
+					<h2>One Small Problem</h2>
+					<p>With the current setup, it will just be getting from the cache at this point. Not great for frequently updated content....</p>
+				</section>
+				
+				<section>
+					<h3>Network and then cache</h3>
+					<pre><code class="hljs" data-trim>
+self.addEventListener('fetch', function(e) {
+  e.respondWith(
+    fetch(e.request)
+      .then((response) => networkThenCache(response,e))
+      .catch(() => pullFromCache(e))
+  );
+});
+					</code></pre>
+				</section>
+
+				<section>
+					<pre><code class="hljs" data-trim>
+function networkThenCache(response,e) {
+  return caches.open(cacheVersion)
+    .then(function(cache) {
+      return caches.match(e.request)
+        .then(function(res) {
+          e.request.url.match('chrome-extension://') ? 
+          '' : 
+          cache.put(e.request, response.clone());
+          return response;
+        });
+    });
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<pre><code class="hljs" data-trim>
+function pullFromCache(e) {
+  return caches.open(cacheVersion)
+    .then(function(cache) {
+      return caches.match(e.request)
+        .then(function(res) {
+          return res;
+        });
+    });
+}
+					</code></pre>
+				</section>
+
+
+				<section>
+						<h2>🐶 Woof that is a lot of code...</h2>
+				</section>
+
+				<section>
+					<p style="font-size: 100px; position: relative; left: -100px;"><span class="fragment" data-fragment-index="8">⇣</span>&nbsp;&nbsp;<span style="position: relative; top: -60px;" class="fragment" data-fragment-index="7">⇠</span>&nbsp;&nbsp;<span class="fragment" data-fragment-index="6">⇡</span> ︎</p>
+					<p style="font-size: 100px;position: relative;">📂 &nbsp;&nbsp;&nbsp;&nbsp;  📦 <span class="fragment" data-fragment-index="5">⇠</span> ☁️<span style="color: green; font-size: 50px;position: absolute; right: 60px;top: 20px">✔</span>️</p>
+					<p style="font-size: 100px; position: relative; left:-10px"><span class="fragment" data-fragment-index="1">⇣</span>&nbsp;&nbsp;&nbsp;<span style="position: relative; top: 60px;" class="fragment" data-fragment-index="2">⇢</span>&nbsp&nbsp;&nbsp;<span style="position: relative; top: 60px;" class="fragment" data-fragment-index="3">⇢</span>&nbsp;&nbsp;&nbsp;<span class="fragment" data-fragment-index="4">⇡</span> ︎</p>
+				</section>
+
+				<section>
+					<p>Now when the user is online, we get fresh info, if the user is offline we get cached info.</p>
+				</section>
+
+				<section>
+					<h3>Cleaning up the cache</h3>
+					<p>Over time we might want add to our cache, or update how our service worker works.</p>
+					<p>Enter the <code>activate</code> event.</p>
+				</section>
+
+				<section>
+					<p>Activate is fired after the worker has been installed. Once the page loads, the activate event will fire and run any code we want inside of it.</p>
+				</section>
+
+				<section>
+					<p>First, lets change the hard coded <code>union-times</code> name we have been using, and store that in a variable,</p>
+					<pre><code class="hljs" data-trim>
+const cacheVersion = 'union-times-v2';
+					</code></pre>
+				</section>
+
+				<section>
+					<pre><code class="hljs" data-trim>
+self.addEventListener('activate', function(e) {
+  e.waitUntil(
+    
+  );
+});
+					</code></pre>
+				</section>
+
+				<section>
+					<p>Get all the caches avaible</p>
+					<pre><code class="hljs" data-trim>
+self.addEventListener('activate', function(e) {
+  e.waitUntil(
+    caches.keys().then((cacheNames) => {
+    
+    })
+  );
+});
+					</code></pre>
+				</section>
+
+				<section>
+					<p>Delete the caches.</p>
+					<pre><code class="hljs" data-trim>
+self.addEventListener('activate', function(e) {
+  e.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.filter(() => true)
+          .map((cache) => caches.delete(cache))
+        );
+      })
+    ;
+});
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Dev Tools</h2>
+					<p>Debugging your worker is something you will do a lot of when you start working on it.</p>
+					<p>The Application tab is your new friend.</p>
+				</section>
+
+				<section>
+					<img src="imgs/application.png" alt="">
+				</section>
+
+				<section>
+					<img src="imgs/ff-dev-cache.png" alt="">
+				</section>
+
+				<section>
+					<img src="imgs/ff-dev-workers.png" alt="">
+				</section>
+
+				<section>
+					<h2>Errors but where?</h2>
+					<img src="imgs/errors_but_where.png">
+					<p>A small source of frustration. But it can only get better.</p>
+				</section>
+
+				<section>
+					<h2>Browser support</h2>
+					<img src="imgs/ready.png" alt="">
+				</section>
+
+				<section>
+					<h2>Resources</h2>
+					<ul>
+						<li>https://jakearchibald.com/2014/offline-cookbook</li>
+						<li>https://jakearchibald.github.io/isserviceworkerready/</li>
+						<li>https://nolanlawson.github.io/html5workertest/</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>Thanks! 👋</h1>
+				</section>
 			</div>
 		</div>
 
