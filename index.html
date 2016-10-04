@@ -123,6 +123,7 @@
 				<section>
 					<h3>Demo Site</h3>
 					<a href="https://rchristiani.github.io/ttc-service-workers/">https://rchristiani.github.io/ttc-service-workers/</a>
+					<p class="fragment">Sorry iOS 9, I used a bunch of arrow functions...and fetch</p>
 				</section>
 
 				<section>
@@ -150,18 +151,13 @@ if('serviceWorker' in navigator) {
 				<section>
 					<h3>Scope</h3>
 					<p>Inside of service works we have a different environment work with. There is no DOM access available to you.</p>
-				</section>
-
-				<section>
-					<h3><code>self</code></h3>
-					<p>Inside of the workers environment, we get access to a global called <code>self</code>. This object has all the methods and properties that we need.</p>
+					<p>We can post messages however between our worker and the page.</p>
 				</section>
 
 				<section>
 					<h3>Life Cycle</h3>
 					<p>When a service worker is registered there is a lifecycle it goes there, and there are a series of events that are triggered.</p>
 					<ul>
-						<li class="fragment">Download</li>
 						<li class="fragment">Install</li>
 						<li class="fragment">Active</li>
 					</ul>
@@ -205,7 +201,7 @@ return cache.addAll([
   'css/style.css'
 ]);
 					</code></pre>
-					<p><strong>NOTE</strong> You have to make sure you paths are correct, otherwise your cache will fail to fetch the resource!</p>
+					<p><strong>NOTE</strong> You have to make sure your paths are correct, otherwise your cache will fail to fetch the resource!</p>
 				</section>
 				<section>
 					<p>So here we have cached our assets, we can see this if we go to the application panel again, and checkout the cache section.</p>
@@ -359,6 +355,11 @@ function pullFromCache(e) {
 				</section>
 
 				<section>
+					<p style="font-size: 100px; position: relative; left: -100px;"><span class="fragment" data-fragment-index="4">⇣</span>&nbsp;&nbsp;<span style="position: relative; top: -60px;" class="fragment" data-fragment-index="3">⇠</span>&nbsp;&nbsp;<span class="fragment" data-fragment-index="2">⇡</span> ︎</p>
+					<p style="font-size: 100px;">📂 <span class="fragment" data-fragment-index="1">⇢</span> 📦 ️❌ ☁️</p>
+				</section>
+
+				<section>
 					<p>Now when the user is online, we get fresh info, if the user is offline we get cached info.</p>
 				</section>
 
@@ -369,7 +370,7 @@ function pullFromCache(e) {
 				</section>
 
 				<section>
-					<p>Activate is fired after the worker has been installed. Once the page loads, the activate event will fire and run any code we want inside of it.</p>
+					<p>Activate is fired after the worker has been installed. Once the page loads, the activate event can be used to run any code we want.</p>
 				</section>
 
 				<section>
@@ -445,6 +446,22 @@ self.addEventListener('activate', function(e) {
 				<section>
 					<h2>Browser support</h2>
 					<img src="imgs/ready.png" alt="">
+				</section>
+
+				<section>
+					<h3>sw-toolbox</h3>
+				</section>
+
+				<section>
+					<pre><code class="hljs" data-trim>
+toolbox.precache([
+  '',
+  'js/script.js',
+  'js/templater.js',
+  'css/style.css'
+]);
+					</code></pre>
+					<p>No need for all the</p>
 				</section>
 
 				<section>
